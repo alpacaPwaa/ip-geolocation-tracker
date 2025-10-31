@@ -7,18 +7,29 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "migrate": "tsx backend/migrate.ts",
+    "seed": "tsx backend/seed.ts",
+    "serve": "tsx backend/server.ts"
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.1.16",
+    "better-sqlite3": "^12.4.1",
+    "cors": "^2.8.5",
+    "drizzle-orm": "^0.44.7",
+    "express": "^5.1.0",
     "leaflet": "^1.9.4",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
     "react-leaflet": "^5.0.0",
-    "tailwindcss": "^4.1.16"
+    "tailwindcss": "^4.1.16",
+    "tsx": "^4.20.6"
   },
   "devDependencies": {
     "@eslint/js": "^9.36.0",
+    "@types/better-sqlite3": "^7.6.13",
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.5",
     "@types/leaflet": "^1.9.21",
     "@types/node": "^24.6.0",
     "@types/react": "^19.1.16",
@@ -28,6 +39,7 @@
     "eslint-plugin-react-hooks": "^5.2.0",
     "eslint-plugin-react-refresh": "^0.4.22",
     "globals": "^16.4.0",
+    "ts-node": "^10.9.2",
     "typescript": "~5.9.3",
     "typescript-eslint": "^8.45.0",
     "vite": "^7.1.7"

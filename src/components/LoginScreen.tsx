@@ -10,9 +10,10 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ onLogin }) => {
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setError("");
+
     if (!email || !password) {
       setError("Email and password are required.");
       return;
@@ -20,14 +21,30 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ onLogin }) => {
 
     setIsLoading(true);
 
-    setTimeout(() => {
-      if (email === "test@example.com" && password === "password") {
-        onLogin();
-      } else {
-        setError("Invalid credentials. Please try again.");
+    try {
+      const response = await fetch("http://localhost:3001/api/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || "Login failed");
       }
+
+      // If successful, call onLogin()
+      onLogin();
+    } catch (err) {
+      if (err instanceof Error) {
+        setError(err.message);
+      } else {
+        setError("An unexpected error occurred.");
+      }
+    } finally {
       setIsLoading(false);
-    }, 1000);
+    }
   };
 
   return (
@@ -36,10 +53,6 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ onLogin }) => {
         <div className="text-center">
           <h1 className="text-4xl font-bold text-white">Welcome Back</h1>
           <p className="mt-2 text-slate-400">Sign in to track IPs</p>
-          <p className="mt-4 text-xs text-sky-400 bg-sky-900/50 p-2 rounded-md">
-            Use <span className="font-mono">test@example.com</span> and{" "}
-            <span className="font-mono">password</span> to log in.
-          </p>
         </div>
         <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
           <div className="relative">
